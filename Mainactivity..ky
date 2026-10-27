@@ -1,0 +1,73 @@
+package com.gouse.bot
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
+data class ChatMessage(val text: String, val isUser: Boolean)
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var inputMessage: EditText
+    private lateinit var btnSend: Button
+    private val chatList = mutableListOf<ChatMessage>()
+    private lateinit var adapter: ChatAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        recyclerView = findViewById(R.id.chatRecycler)
+        inputMessage = findViewById(R.id.inputMessage)
+        btnSend = findViewById(R.id.btnSend)
+        adapter = ChatAdapter(chatList)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
+        addMessage("Hello! I am Gouse Bot AI Pro 🚀 Created by Gouse. How can I help?", false)
+        btnSend.setOnClickListener {
+            val q = inputMessage.text.toString().trim()
+            if (q.isNotEmpty()) {
+                addMessage(q, true)
+                inputMessage.text.clear()
+                val ans = getAnswer(q)
+                addMessage(ans, false)
+            }
+        }
+    }
+    private fun addMessage(text: String, isUser: Boolean) {
+        chatList.add(ChatMessage(text, isUser))
+        adapter.notifyItemInserted(chatList.size - 1)
+        recyclerView.scrollToPosition(chatList.size - 1)
+    }
+    private fun getAnswer(q: String): String {
+        val l = q.lowercase()
+        return when {
+            l.contains("hello") || l.contains("hi") -> "Hello Boss! I am Gouse Bot. What you need?"
+            l.contains("who") -> "I am Gouse Bot, Professional AI made by Gouse."
+            l.contains("how are you") -> "I am super fine! Ready to help you Boss."
+            l.contains("code") -> "Yes I can code! Tell me what app you want - Android, Website, Python?"
+            l.contains("india") -> "India is Best! Capital Delhi. What about India you want to know?"
+            l.contains("movie") -> "I love movies! Which movie you want?"
+            l.contains("love") -> "I love you too as my creator Gouse! ❤️"
+            else -> "Gouse Bot Pro Answer:\n\nYou asked: '$q'\n\nThis is my professional answer. I can help with study, coding, gk, jokes, movies, etc. Ask me anything more specific!"
+        }
+    }
+}
+class ChatAdapter(private val list: List<ChatMessage>) : RecyclerView.Adapter<ChatAdapter.VH>() {
+    class VH(val tv: TextView) : RecyclerView.ViewHolder(tv)
+    override fun onCreateViewHolder(p: ViewGroup, v: Int): VH {
+        val tv = TextView(p.context)
+        tv.setPadding(30,30,30,30)
+        tv.textSize = 16f
+        return VH(tv)
+    }
+    override fun onBindViewHolder(h: VH, pos: Int) {
+        val m = list[pos]
+        h.tv.text = if(m.isUser) "👤 You: ${m.text}" else "🤖 Gouse Bot: ${m.text}"
+        h.tv.setTextColor(if(m.isUser) android.graphics.Color.WHITE else android.graphics.Color.parseColor("#00FF88"))
+    }
+    override fun getItemCount() = list.size
+}
