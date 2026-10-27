@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="#0F0F0F">
+    <TextView android:layout_width="match_parent" android:layout_height="60dp"
+        android:text="🤖 GOUSE BOT AI PRO" android:textColor="#00FF88"
+        android:textSize="20sp" android:textStyle="bold" android:gravity="center"
+        android:background="#1A1A1A"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatRecycler" android:layout_width="match_parent"
+        android:layout_height="0dp" android:layout_weight="1" android:padding="10dp"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:padding="10dp" android:background="#1A1A1A">
+        <EditText android:id="@+id/inputMessage" android:layout_width="0dp"
+            android:layout_height="50dp" android:layout_weight="1"
+            android:hint="Ask to Gouse Bot..." android:textColor="white"
+            android:textColorHint="gray" android:padding="12dp"
+            android:background="#333333"/>
+        <Button android:id="@+id/btnSend" android:layout_width="70dp"
+            android:layout_height="50dp" android:text="SEND"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+</LinearLayout>
